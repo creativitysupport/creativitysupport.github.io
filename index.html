@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creativity Support</title>
+    <title>WrightHere</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.9/SmoothScroll.min.js"></script>
 </head>
@@ -11,7 +11,7 @@
     <!-- Fixed Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#hero" class="nav-logo">Creativity Support</a>
+            <a href="#hero" class="nav-logo">WrightHere</a>
             <ul class="nav-menu">
                 <li><a href="#about">About</a></li>
                 <li><a href="#works">Works</a></li>
@@ -24,7 +24,7 @@
     <!-- Hero Section - Full Screen -->
     <section id="hero" class="fullscreen-section hero-section">
         <div class="content-center fade-in">
-            <h1 class="main-title">Creativity Support</h1>
+            <h1 class="main-title">WrightHere</h1>
             <p class="main-subtitle">Exploring Innovation Through Creative Expression</p>
             <div class="scroll-indicator">
                 <span>↓</span>
@@ -177,27 +177,22 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <div class="modal-body">
-                <div class="modal-media">
-                    <div class="placeholder-image">
-                        <span>Large Image / Video Here</span>
+                <div class="carousel-container">
+                    <button class="carousel-btn prev" onclick="changeSlide(-1)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- Images will be inserted here dynamically -->
                     </div>
-                </div>
-                <div class="modal-info">
-                    <h2 id="modalTitle">Project Title</h2>
-                    <p class="modal-tags" id="modalTags">#Tags</p>
-                    <div class="modal-description">
-                        <h3>Project Overview</h3>
-                        <p id="modalDescription">프로젝트에 대한 상세 설명이 여기에 표시됩니다.</p>
-                        
-                        <h3>Key Features</h3>
-                        <ul id="modalFeatures">
-                            <li>주요 기능 1</li>
-                            <li>주요 기능 2</li>
-                            <li>주요 기능 3</li>
-                        </ul>
-                        
-                        <h3>Technologies</h3>
-                        <p id="modalTech">사용된 기술 스택</p>
+                    <button class="carousel-btn next" onclick="changeSlide(1)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="carousel-dots" id="carouselDots">
+                        <!-- Dots will be inserted here dynamically -->
                     </div>
                 </div>
             </div>
