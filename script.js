@@ -245,75 +245,57 @@ document.addEventListener('DOMContentLoaded', () => {
    
    ============================================ */
 
-// Work 데이터 (추후 실제 프로젝트 정보로 변경)
+// Work 데이터 - 각 프로젝트당 여러 이미지를 추가할 수 있습니다
 const worksData = {
     1: {
-        title: "Creative Project 01",
-        tags: "#Interactive #AI #Installation",
-        description: "인공지능과 인간의 창의성이 만나는 인터랙티브 설치 작품입니다. 관객의 움직임과 소리에 반응하여 실시간으로 변화하는 시각적 경험을 제공합니다.",
-        features: [
-            "실시간 모션 트래킹 및 반응형 비주얼",
-            "생성형 AI를 활용한 동적 패턴 생성",
-            "다층적 사운드스케이프 통합"
-        ],
-        tech: "OpenCV, TensorFlow, TouchDesigner, Max/MSP"
+        images: [
+            "src/GCG.png",
+            "src/ubicomp-photo.jpg",
+            "src/siggraph-photo-3.jpeg",
+            "src/logo-blue.png"
+        ]
     },
     2: {
-        title: "Creative Project 02",
-        tags: "#Web #UX/UI #Generative",
-        description: "사용자 경험과 생성 알고리즘이 결합된 웹 기반 크리에이티브 플랫폼입니다. 각 사용자의 인터랙션에 따라 고유한 시각적 결과물을 생성합니다.",
-        features: [
-            "개인화된 생성 알고리즘 엔진",
-            "반응형 웹 디자인 시스템",
-            "실시간 협업 기능"
-        ],
-        tech: "React, Three.js, WebGL, Node.js, Socket.io"
+        images: [
+            "Image 1",
+            "Image 2",
+            "Image 3",
+            "Image 4"
+        ]
     },
     3: {
-        title: "Creative Project 03",
-        tags: "#AR #Mobile #Experience",
-        description: "증강현실 기술을 활용한 모바일 경험 디자인 프로젝트입니다. 일상 공간에 디지털 레이어를 더해 새로운 창의적 가능성을 탐구합니다.",
-        features: [
-            "ARKit/ARCore 기반 공간 인식",
-            "위치 기반 콘텐츠 배치",
-            "소셜 공유 및 협업 기능"
-        ],
-        tech: "Unity, ARKit, ARCore, C#, Firebase"
+        images: [
+            "Image 1",
+            "Image 2"
+        ]
     },
     4: {
-        title: "Creative Project 04",
-        tags: "#DataViz #Interactive #Research",
-        description: "복잡한 데이터를 직관적이고 아름다운 비주얼로 변환하는 인터랙티브 데이터 시각화 작품입니다. 탐색적 경험을 통해 새로운 인사이트를 발견합니다.",
-        features: [
-            "다차원 데이터 시각화",
-            "인터랙티브 필터링 및 탐색",
-            "실시간 데이터 스트리밍"
-        ],
-        tech: "D3.js, WebGL, Python, Pandas, Flask"
+        images: [
+            "Image 1",
+            "Image 2",
+            "Image 3"
+        ]
     },
     5: {
-        title: "Creative Project 05",
-        tags: "#Physical #IoT #Kinetic",
-        description: "IoT 센서와 키네틱 구조가 결합된 피지컬 컴퓨팅 작품입니다. 환경 데이터에 반응하여 움직이는 조형물을 통해 데이터의 물리적 구현을 탐구합니다.",
-        features: [
-            "환경 센서 네트워크 구축",
-            "모터 제어 및 동기화 시스템",
-            "데이터 수집 및 분석 플랫폼"
-        ],
-        tech: "Arduino, Raspberry Pi, Python, MQTT, InfluxDB"
+        images: [
+            "Image 1",
+            "Image 2",
+            "Image 3",
+            "Image 4",
+            "Image 5"
+        ]
     },
     6: {
-        title: "Creative Project 06",
-        tags: "#Sound #Generative #Performance",
-        description: "알고리즘 작곡과 실시간 퍼포먼스가 만나는 사운드 아트 프로젝트입니다. 생성 알고리즘이 만들어내는 음악적 구조와 즉흥성의 조화를 탐구합니다.",
-        features: [
-            "실시간 알고리즘 작곡 엔진",
-            "MIDI 및 OSC 프로토콜 통합",
-            "멀티채널 사운드 시스템"
-        ],
-        tech: "Max/MSP, SuperCollider, Ableton Live, Python"
+        images: [
+            "Image 1",
+            "Image 2",
+            "Image 3"
+        ]
     }
 };
+
+let currentSlideIndex = 0;
+let currentWorkImages = [];
 
 // 모달 열기
 function openModal(workId) {
@@ -325,15 +307,12 @@ function openModal(workId) {
         return;
     }
     
-    // 모달 내용 업데이트
-    document.getElementById('modalTitle').textContent = work.title;
-    document.getElementById('modalTags').textContent = work.tags;
-    document.getElementById('modalDescription').textContent = work.description;
-    document.getElementById('modalTech').textContent = work.tech;
+    // 현재 작업의 이미지 배열 저장
+    currentWorkImages = work.images;
+    currentSlideIndex = 0;
     
-    // Features 리스트 업데이트
-    const featuresList = document.getElementById('modalFeatures');
-    featuresList.innerHTML = work.features.map(feature => `<li>${feature}</li>`).join('');
+    // 캐러셀 업데이트
+    updateCarousel();
     
     // 모달 표시
     modal.style.display = 'flex';
@@ -343,6 +322,52 @@ function openModal(workId) {
     
     // body 스크롤 방지
     document.body.style.overflow = 'hidden';
+}
+
+// 캐러셀 업데이트
+function updateCarousel() {
+    const track = document.getElementById('carouselTrack');
+    const dotsContainer = document.getElementById('carouselDots');
+    
+    // 슬라이드 생성
+    track.innerHTML = currentWorkImages.map((imageSrc, index) => {
+        // 이미지 경로인지 확인 (src/로 시작하는지)
+        const isImage = imageSrc.startsWith('src/');
+        
+        return `
+            <div class="carousel-slide ${index === currentSlideIndex ? 'active' : ''}">
+                ${isImage ? 
+                    `<img src="${imageSrc}" alt="Project image ${index + 1}">` : 
+                    `<div class="placeholder-image"><span>${imageSrc}</span></div>`
+                }
+            </div>
+        `;
+    }).join('');
+    
+    // 점 인디케이터 생성
+    dotsContainer.innerHTML = currentWorkImages.map((_, index) => `
+        <div class="carousel-dot ${index === currentSlideIndex ? 'active' : ''}" onclick="goToSlide(${index})"></div>
+    `).join('');
+}
+
+// 슬라이드 변경
+function changeSlide(direction) {
+    currentSlideIndex += direction;
+    
+    // 순환 처리
+    if (currentSlideIndex < 0) {
+        currentSlideIndex = currentWorkImages.length - 1;
+    } else if (currentSlideIndex >= currentWorkImages.length) {
+        currentSlideIndex = 0;
+    }
+    
+    updateCarousel();
+}
+
+// 특정 슬라이드로 이동
+function goToSlide(index) {
+    currentSlideIndex = index;
+    updateCarousel();
 }
 
 // 모달 닫기
@@ -358,12 +383,17 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 
-// ESC 키로 모달 닫기
+// 키보드 이벤트 처리 (ESC로 모달 닫기, 화살표로 슬라이드 이동)
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const modal = document.getElementById('workModal');
-        if (modal.classList.contains('active')) {
+    const modal = document.getElementById('workModal');
+    
+    if (modal.classList.contains('active')) {
+        if (e.key === 'Escape') {
             closeModal();
+        } else if (e.key === 'ArrowLeft') {
+            changeSlide(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeSlide(1);
         }
     }
 });
