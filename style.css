@@ -484,6 +484,14 @@ html {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.carousel-container:active {
+    cursor: grabbing;
 }
 
 .carousel-track {
@@ -518,6 +526,10 @@ html {
     height: 100%;
     object-fit: contain;
     background: #0a0a0a;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    pointer-events: none;
 }
 
 .carousel-slide .placeholder-image {

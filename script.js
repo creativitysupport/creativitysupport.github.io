@@ -222,6 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
             cursor: auto !important;
         }
         
+        /* 캐러셀 컨테이너는 grab 커서 사용 */
+        #workModal .carousel-container {
+            cursor: grab !important;
+        }
+        
+        #workModal .carousel-container:active {
+            cursor: grabbing !important;
+        }
+        
         #workModal a,
         #workModal button,
         #workModal .modal-close {
@@ -318,8 +327,8 @@ function openModal(workId) {
     modal.style.display = 'flex';
     setTimeout(() => {
         modal.classList.add('active');
-        // 모달이 표시된 후 터치 이벤트 설정
-        setupTouchEvents();
+        // 모달이 표시된 후 마우스/터치 스와이프 이벤트 설정
+        setupSwipeEvents();
     }, 10);
     
     // body 스크롤 방지
@@ -384,8 +393,8 @@ function closeModal() {
     // body 스크롤 복원
     document.body.style.overflow = '';
     
-    // 터치 리스너 플래그 리셋
-    touchListenersAdded = false;
+    // 스와이프 리스너 플래그 리셋
+    swipeListenersAdded = false;
 }
 
 // 키보드 이벤트 처리 (ESC로 모달 닫기, 화살표로 슬라이드 이동)
@@ -403,74 +412,102 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// 터치 스와이프 기능
-let touchStartX = 0;
-let touchEndX = 0;
-let touchStartY = 0;
-let touchEndY = 0;
-let isSwiping = false;
-let touchListenersAdded = false;
+// 마우스 드래그 & 터치 스와이프 기능
+let startX = 0;
+let endX = 0;
+let startY = 0;
+let endY = 0;
+let isDragging = false;
+let swipeListenersAdded = false;
 
-function setupTouchEvents() {
+function setupSwipeEvents() {
     const container = document.querySelector('.carousel-container');
     
     if (!container) return;
     
     // 이미 이벤트가 추가되었다면 리턴
-    if (touchListenersAdded) return;
+    if (swipeListenersAdded) return;
     
-    const handleTouchStart = (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        isSwiping = false;
+    // 시작 위치 저장 (마우스 또는 터치)
+    const handleStart = (e) => {
+        isDragging = true;
+        if (e.type === 'mousedown') {
+            startX = e.clientX;
+            startY = e.clientY;
+        } else if (e.type === 'touchstart') {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }
     };
     
-    const handleTouchMove = (e) => {
-        if (!touchStartX) return;
+    // 이동 중 (마우스 또는 터치)
+    const handleMove = (e) => {
+        if (!isDragging) return;
         
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        const diffX = Math.abs(touchStartX - currentX);
-        const diffY = Math.abs(touchStartY - currentY);
+        let currentX, currentY;
+        if (e.type === 'mousemove') {
+            currentX = e.clientX;
+            currentY = e.clientY;
+        } else if (e.type === 'touchmove') {
+            currentX = e.touches[0].clientX;
+            currentY = e.touches[0].clientY;
+        }
         
-        // 가로 스와이프가 세로보다 크면 스와이프로 간주
+        const diffX = Math.abs(startX - currentX);
+        const diffY = Math.abs(startY - currentY);
+        
+        // 가로 드래그가 세로보다 크면 드래그로 간주
         if (diffX > diffY && diffX > 10) {
-            isSwiping = true;
+            // 스크롤 방지
+            if (e.cancelable) {
+                e.preventDefault();
+            }
         }
     };
     
-    const handleTouchEnd = (e) => {
-        if (!isSwiping) {
-            touchStartX = 0;
-            isSwiping = false;
-            return;
+    // 종료 (마우스 또는 터치)
+    const handleEnd = (e) => {
+        if (!isDragging) return;
+        
+        if (e.type === 'mouseup') {
+            endX = e.clientX;
+        } else if (e.type === 'touchend') {
+            endX = e.changedTouches[0].clientX;
         }
         
-        touchEndX = e.changedTouches[0].clientX;
-        const diffX = touchStartX - touchEndX;
+        const diffX = startX - endX;
         
-        // 최소 50픽셀 이상 스와이프
+        // 최소 50픽셀 이상 드래그/스와이프
         if (Math.abs(diffX) > 50) {
             if (diffX > 0) {
-                // 왼쪽으로 스와이프 -> 다음 슬라이드
+                // 왼쪽으로 드래그 -> 다음 슬라이드
                 changeSlide(1);
             } else {
-                // 오른쪽으로 스와이프 -> 이전 슬라이드
+                // 오른쪽으로 드래그 -> 이전 슬라이드
                 changeSlide(-1);
             }
         }
         
         // 초기화
-        touchStartX = 0;
-        touchEndX = 0;
-        isSwiping = false;
+        isDragging = false;
+        startX = 0;
+        endX = 0;
     };
     
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: true });
-    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    // 마우스 이벤트
+    container.addEventListener('mousedown', handleStart);
+    container.addEventListener('mousemove', handleMove);
+    container.addEventListener('mouseup', handleEnd);
+    container.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
     
-    touchListenersAdded = true;
+    // 터치 이벤트
+    container.addEventListener('touchstart', handleStart, { passive: true });
+    container.addEventListener('touchmove', handleMove, { passive: false });
+    container.addEventListener('touchend', handleEnd, { passive: true });
+    
+    swipeListenersAdded = true;
 }
 
 // 모달 외부 클릭시 닫기는 이미 HTML의 onclick="closeModal()"로 처리됨
