@@ -123,7 +123,7 @@ function heroParallaxEffect() {
     const scrollPosition = window.pageYOffset;
     const heroHeight = heroSection.offsetHeight;
     const heroBottom = heroSection.offsetTop + heroHeight;
-    const initialOffset = 80; // 초기 아래 오프셋
+    const initialOffset = 0; // 초기 오프셋 없음
     
     // Hero 섹션 내에 있을 때
     if (scrollPosition < heroHeight) {
@@ -136,6 +136,70 @@ function heroParallaxEffect() {
         // 빠르게 올라가는 효과
         const fastScrollValue = initialOffset + heroHeight * 0.5 + (scrollPosition - heroHeight) * 1.5;
         heroBackground.style.transform = `translateY(${fastScrollValue}px)`;
+    }
+}
+
+/* ============================================
+   IF 로고 Fade Out - Showcase Section
+   ============================================
+   
+   Hero section에서는 보이고, About section을 지나
+   Showcase section에 가까워지면 점차 사라집니다.
+   
+   ============================================ */
+
+function ifLogoFadeEffect() {
+    const heroSection = document.getElementById('hero');
+    const aboutSection = document.getElementById('about');
+    const gallerySection = document.getElementById('gallery');
+    const exhibitionSection = document.getElementById('exhibition');
+    const contactSection = document.getElementById('contact');
+    const ifLogo = document.querySelector('.hero-if-logo');
+    
+    if (!heroSection || !aboutSection || !gallerySection || !exhibitionSection || !contactSection || !ifLogo) return;
+    
+    const scrollPosition = window.pageYOffset;
+    const heroHeight = heroSection.offsetHeight;
+    const aboutTop = aboutSection.offsetTop;
+    const aboutHeight = aboutSection.offsetHeight;
+    const aboutBottom = aboutTop + aboutHeight;
+    const galleryTop = gallerySection.offsetTop;
+    const exhibitionTop = exhibitionSection.offsetTop;
+    const exhibitionHeight = exhibitionSection.offsetHeight;
+    const contactTop = contactSection.offsetTop;
+    const contactHeight = contactSection.offsetHeight;
+    
+    // Hero 섹션에서는 완전히 보임
+    if (scrollPosition < heroHeight) {
+        ifLogo.style.opacity = '1.0';
+    }
+    // About 섹션 중간까지만 보임 (60% 지점까지)
+    else if (scrollPosition < aboutTop + aboutHeight * 0.1) {
+        ifLogo.style.opacity = '1.0';
+    }
+    // About 섹션 중후반에서 빠르게 사라짐 (60%~75%에서 빠른 fade out)
+    else if (scrollPosition < aboutTop + aboutHeight * 0.25) {
+        const fadeStart = aboutTop + aboutHeight * 0.6;
+        const fadeDistance = aboutHeight * 0.15;
+        const fadeProgress = (scrollPosition - fadeStart) / fadeDistance;
+        const opacity = 1.0 * (1 - fadeProgress);
+        ifLogo.style.opacity = Math.max(0, opacity).toString();
+    }
+    // Exhibition 섹션 마지막 15% 전까지: 숨김
+    else if (scrollPosition < exhibitionTop + exhibitionHeight * 0.85) {
+        ifLogo.style.opacity = '0';
+    }
+    // Exhibition 섹션 마지막 15%에서 빠르게 fade in (앞부분 fade out과 동일한 속도)
+    else if (scrollPosition < exhibitionTop + exhibitionHeight) {
+        const fadeStart = exhibitionTop + exhibitionHeight * 0.5;
+        const fadeDistance = exhibitionHeight * 0.5;
+        const fadeProgress = (scrollPosition - fadeStart) / fadeDistance;
+        const opacity = 1.0 * fadeProgress;
+        ifLogo.style.opacity = Math.max(0, opacity).toString();
+    }
+    // Contact 섹션 내부: 완전히 보임
+    else {
+        ifLogo.style.opacity = '1.0';
     }
 }
 
@@ -281,6 +345,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Hero Parallax Effect
     window.addEventListener('scroll', heroParallaxEffect);
+    
+    // IF Logo Fade Effect
+    window.addEventListener('scroll', ifLogoFadeEffect);
+    ifLogoFadeEffect(); // Initial check
     
     // Horizontal Gallery Scroll with Mouse Drag
     setupHorizontalGalleryScroll();

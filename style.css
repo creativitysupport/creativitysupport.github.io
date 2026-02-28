@@ -116,11 +116,24 @@ html {
     bottom: 0;
     background-image: url('src/wh-black-7.jpg');
     background-size: cover;
-    background-position: center bottom;
+    background-position: center center;
     background-repeat: no-repeat;
     will-change: transform;
     z-index: 0;
-    transform: translateY(80px);
+    overflow: hidden;
+}
+
+.hero-background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 1;
 }
 
 /* Hero Section Overlay - 불투명도 조절 가능 */
@@ -160,11 +173,37 @@ html {
     letter-spacing: -0.01em;
 }
 
+.hero-if-logo {
+    position: fixed;  /* 화면에 고정 */
+    bottom: 3rem;     /* 하단으로부터 거리 조정 (기본값: 3rem) */
+    right: 3rem;      /* 오른쪽으로부터 거리 조정 (기본값: 3rem) */
+    z-index: 10;      /* 다른 요소 위에 표시 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-out;  /* 부드러운 fade 효과 */
+}
+
+.hero-if-logo img {
+    height: 70px;  /* 데스크톱 로고 크기 조정 (기본값: 70px) */
+    width: auto;
+    object-fit: contain;
+    opacity: 0.9;
+}
+
 .scroll-indicator {
-    margin-top: 5rem;
+    display: inline-block;
+    margin-top: 8rem;  /* subtitle과 스크롤 인디케이터 사이 간격 (기본값: 8rem) */
     font-size: 2rem;
     color: var(--text-secondary);
+    text-decoration: none;
+    cursor: pointer;
     animation: bounce 2s infinite;
+    transition: color 0.3s ease;
+}
+
+.scroll-indicator:hover {
+    color: var(--text-primary);
 }
 
 @keyframes bounce {
@@ -435,8 +474,12 @@ html {
     color: var(--text-secondary);
     text-align: center;
     padding: 3rem 2rem;
-    border-top: 1px solid var(--border-color);
     font-size: 0.9rem;
+}
+
+.footer p {
+    margin: 0;
+    padding-top: 0rem;  /* All rights reserved 텍스트를 아래로 내려서 로고와 수평 정렬 */
 }
 
 /* Fade-in Animation */
@@ -478,6 +521,15 @@ html {
         height: 28px;
     }
     
+    .hero-if-logo {
+        bottom: 2rem;  /* 태블릿 하단 거리 조정 */
+        right: 2rem;   /* 태블릿 오른쪽 거리 조정 */
+    }
+    
+    .hero-if-logo img {
+        height: 55px;  /* 태블릿 로고 크기 조정 */
+    }
+    
     .work-item {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -516,6 +568,15 @@ html {
     
     .nav-menu a {
         font-size: 0.85rem;
+    }
+    
+    .hero-if-logo {
+        bottom: 1.5rem;  /* 모바일 하단 거리 조정 */
+        right: 1.5rem;   /* 모바일 오른쪽 거리 조정 */
+    }
+    
+    .hero-if-logo img {
+        height: 45px;  /* 모바일 로고 크기 조정 */
     }
     
     .fullscreen-section {
