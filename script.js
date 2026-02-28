@@ -148,6 +148,33 @@ function heroParallaxEffect() {
    
    ============================================ */
 
+// Hero Overlay 제거 및 스크롤 제어
+let overlayCleared = false;
+let isScrollLocked = false;
+
+function handleHeroOverlayScroll(e) {
+    const heroSection = document.getElementById('hero');
+    const scrollPosition = window.pageYOffset;
+    
+    // Hero 섹션에 있고, overlay가 아직 제거되지 않았을 때
+    if (scrollPosition === 0 && !overlayCleared) {
+        // 첫 스크롤 시도 감지
+        if (!isScrollLocked) {
+            isScrollLocked = true;
+            e.preventDefault();
+            
+            // Overlay 제거
+            heroSection.classList.add('overlay-clear');
+            overlayCleared = true;
+            
+            // 잠시 후 스크롤 잠금 해제
+            setTimeout(() => {
+                isScrollLocked = false;
+            }, 600); // transition 시간과 동일
+        }
+    }
+}
+
 function ifLogoFadeEffect() {
     const heroSection = document.getElementById('hero');
     const aboutSection = document.getElementById('about');
@@ -349,6 +376,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // IF Logo Fade Effect
     window.addEventListener('scroll', ifLogoFadeEffect);
     ifLogoFadeEffect(); // Initial check
+    
+    // Hero Overlay Scroll Control
+    window.addEventListener('wheel', handleHeroOverlayScroll, { passive: false });
+    window.addEventListener('touchmove', handleHeroOverlayScroll, { passive: false });
     
     // Horizontal Gallery Scroll with Mouse Drag
     setupHorizontalGalleryScroll();
