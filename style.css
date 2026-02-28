@@ -270,6 +270,20 @@ html {
     margin-top: 2rem;
 }
 
+.diagram-container {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.diagram-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    opacity: 0.9;
+}
+
 /* Horizontal Gallery Section */
 .gallery-section {
     background: #0a0a0a;
