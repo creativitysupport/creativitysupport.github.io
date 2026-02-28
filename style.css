@@ -25,6 +25,7 @@ body {
 }
 
 html {
+    background: var(--bg);  /* html 요소에도 배경색 명시적 설정 */
     scroll-behavior: smooth;
 }
 
@@ -184,11 +185,23 @@ html {
     transition: opacity 0.3s ease-out;  /* 부드러운 fade 효과 */
 }
 
+.hero-if-logo a {
+    display: block;
+    line-height: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.hero-if-logo a:hover {
+    transform: scale(1.05);
+}
+
 .hero-if-logo img {
     height: 70px;  /* 데스크톱 로고 크기 조정 (기본값: 70px) */
     width: auto;
     object-fit: contain;
     opacity: 0.9;
+    display: block;
 }
 
 .scroll-indicator {
