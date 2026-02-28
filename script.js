@@ -398,4 +398,47 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// 터치 스와이프 기능
+let touchStartX = 0;
+let touchEndX = 0;
+let touchStartY = 0;
+let touchEndY = 0;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('workModal');
+    
+    modal.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, false);
+    
+    modal.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, false);
+});
+
+function handleSwipe() {
+    const modal = document.getElementById('workModal');
+    
+    // 모달이 활성화되어 있을 때만 동작
+    if (!modal.classList.contains('active')) return;
+    
+    const swipeThreshold = 50; // 최소 스와이프 거리 (픽셀)
+    const horizontalSwipe = Math.abs(touchEndX - touchStartX);
+    const verticalSwipe = Math.abs(touchEndY - touchStartY);
+    
+    // 가로 스와이프가 세로 스와이프보다 클 때만 처리 (세로 스크롤과 구분)
+    if (horizontalSwipe > verticalSwipe && horizontalSwipe > swipeThreshold) {
+        if (touchEndX < touchStartX) {
+            // 왼쪽으로 스와이프 -> 다음 슬라이드
+            changeSlide(1);
+        } else if (touchEndX > touchStartX) {
+            // 오른쪽으로 스와이프 -> 이전 슬라이드
+            changeSlide(-1);
+        }
+    }
+}
+
 // 모달 외부 클릭시 닫기는 이미 HTML의 onclick="closeModal()"로 처리됨
