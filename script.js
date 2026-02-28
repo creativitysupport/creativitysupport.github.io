@@ -90,7 +90,7 @@ function checkIfInView() {
     const windowTopPosition = window.pageYOffset;
     const windowBottomPosition = windowTopPosition + windowHeight;
     
-    const animationElements = document.querySelectorAll('.work-item, .content-center, .section-title');
+    const animationElements = document.querySelectorAll('.work-item, .content-center, .section-title, .gallery-item, .gallery-title');
     
     animationElements.forEach(element => {
         const elementHeight = element.offsetHeight;
@@ -103,6 +103,40 @@ function checkIfInView() {
             element.classList.add('in-view');
         }
     });
+}
+
+/* ============================================
+   Hero Section Parallax Effect
+   ============================================
+   
+   Hero 섹션의 배경이 느리게 스크롤되다가
+   About 섹션으로 넘어갈 때 빠르게 올라가는 효과
+   
+   ============================================ */
+
+function heroParallaxEffect() {
+    const heroSection = document.getElementById('hero');
+    const heroBackground = document.querySelector('.hero-background');
+    
+    if (!heroSection || !heroBackground) return;
+    
+    const scrollPosition = window.pageYOffset;
+    const heroHeight = heroSection.offsetHeight;
+    const heroBottom = heroSection.offsetTop + heroHeight;
+    const initialOffset = 80; // 초기 아래 오프셋
+    
+    // Hero 섹션 내에 있을 때
+    if (scrollPosition < heroHeight) {
+        // 50% 속도로 패럴랙스 효과 (느리게 스크롤)
+        const parallaxValue = initialOffset + scrollPosition * 0.5;
+        heroBackground.style.transform = `translateY(${parallaxValue}px)`;
+    } 
+    // Hero 섹션을 벗어났을 때
+    else {
+        // 빠르게 올라가는 효과
+        const fastScrollValue = initialOffset + heroHeight * 0.5 + (scrollPosition - heroHeight) * 1.5;
+        heroBackground.style.transform = `translateY(${fastScrollValue}px)`;
+    }
 }
 
 /* ============================================
@@ -200,14 +234,15 @@ document.addEventListener('DOMContentLoaded', () => {
             background: rgba(245, 245, 247, 0.1);
         }
         
-        .work-item, .content-center, .section-title {
+        .work-item, .content-center, .section-title, .gallery-item, .gallery-title {
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
                         transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .work-item.in-view, .content-center.in-view, .section-title.in-view {
+        .work-item.in-view, .content-center.in-view, .section-title.in-view, 
+        .gallery-item.in-view, .gallery-title.in-view {
             opacity: 1;
             transform: translateY(0);
         }
@@ -243,6 +278,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', checkIfInView);
     window.addEventListener('resize', checkIfInView);
     checkIfInView(); // Initial check
+    
+    // Hero Parallax Effect
+    window.addEventListener('scroll', heroParallaxEffect);
+    
+    // Horizontal Gallery Scroll with Mouse Drag
+    setupHorizontalGalleryScroll();
 });
 
 /* ============================================
@@ -511,3 +552,44 @@ function setupSwipeEvents() {
 }
 
 // 모달 외부 클릭시 닫기는 이미 HTML의 onclick="closeModal()"로 처리됨
+
+/* ============================================
+   Horizontal Gallery Scroll with Drag
+   ============================================ */
+
+function setupHorizontalGalleryScroll() {
+    const gallery = document.querySelector('.gallery-scroll');
+    
+    if (!gallery) return;
+    
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    gallery.addEventListener('mousedown', (e) => {
+        isDown = true;
+        gallery.style.cursor = 'grabbing';
+        startX = e.pageX - gallery.offsetLeft;
+        scrollLeft = gallery.scrollLeft;
+    });
+    
+    gallery.addEventListener('mouseleave', () => {
+        isDown = false;
+        gallery.style.cursor = 'grab';
+    });
+    
+    gallery.addEventListener('mouseup', () => {
+        isDown = false;
+        gallery.style.cursor = 'grab';
+    });
+    
+    gallery.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - gallery.offsetLeft;
+        const walk = (x - startX) * 3; // 스크롤 속도를 빠르게 (3배)
+        gallery.scrollLeft = scrollLeft - walk;
+    });
+    
+    // 터치 스크롤은 자동으로 지원됨
+}

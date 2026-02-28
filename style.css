@@ -31,15 +31,17 @@ html {
 /* Navigation */
 .navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 10, 0.8);
+    top: 1.5rem;
+    left: 2rem;
+    right: 2rem;
+    background: rgba(10, 10, 10, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
     z-index: 1000;
     padding: 1rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .nav-container {
@@ -52,11 +54,16 @@ html {
 }
 
 .nav-logo {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--text);
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    letter-spacing: -0.02em;
+    height: 32px;
+}
+
+.nav-logo img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
 }
 
 .nav-menu {
@@ -95,7 +102,43 @@ html {
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    position: relative;
+    overflow: hidden;
+    background: #0a0a0a;
+}
+
+/* Hero Background - Parallax Effect */
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('src/wh-black-7.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    will-change: transform;
+    z-index: 0;
+    transform: translateY(80px);
+}
+
+/* Hero Section Overlay - 불투명도 조절 가능 */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* 0.5 = 50% 불투명도, 0~1 사이 값으로 조절 */
+    z-index: 1;
+}
+
+/* Hero Section Content - 오버레이 위에 표시 */
+.hero-section .content-center {
+    position: relative;
+    z-index: 2;
 }
 
 .main-title {
@@ -161,6 +204,77 @@ html {
     color: var(--text-secondary);
     line-height: 1.6;
     margin-top: 2rem;
+}
+
+/* Horizontal Gallery Section */
+.gallery-section {
+    background: #0a0a0a;
+    padding: 8rem 0;
+    overflow: hidden;
+}
+
+.gallery-container {
+    max-width: 100%;
+}
+
+.gallery-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4rem;
+    letter-spacing: -0.03em;
+    padding: 0 2rem;
+}
+
+.gallery-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+    user-select: none;
+    scroll-behavior: auto;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-scroll:active {
+    cursor: grabbing;
+}
+
+.gallery-track {
+    display: flex;
+    gap: 2rem;
+    padding: 0 2rem 2rem 2rem;
+    width: fit-content;
+}
+
+.gallery-item {
+    flex-shrink: 0;
+    height: 500px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #1a1a1a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-item img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    pointer-events: none;
 }
 
 /* Works Section */
@@ -349,8 +463,19 @@ html {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+    .navbar {
+        top: 1rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        border-radius: 12px;
+    }
+    
     .nav-container {
         padding: 0 2rem;
+    }
+    
+    .nav-logo {
+        height: 28px;
     }
     
     .work-item {
@@ -362,9 +487,29 @@ html {
     .exhibition-info {
         gap: 3rem;
     }
+    
+    .gallery-item {
+        height: 400px;
+    }
 }
 
 @media (max-width: 768px) {
+    .navbar {
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        border-radius: 12px;
+        padding: 0.75rem 0;
+    }
+    
+    .nav-container {
+        padding: 0 1.5rem;
+    }
+    
+    .nav-logo {
+        height: 24px;
+    }
+    
     .nav-menu {
         gap: 1.5rem;
     }
@@ -379,6 +524,24 @@ html {
     
     .works-section {
         padding: 5rem 1.5rem;
+    }
+    
+    .gallery-section {
+        padding: 5rem 0;
+    }
+    
+    .gallery-title {
+        font-size: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .gallery-item {
+        height: 300px;
+    }
+    
+    .gallery-track {
+        gap: 1.5rem;
+        padding: 0 1.5rem 1.5rem 1.5rem;
     }
     
     .social-links {
