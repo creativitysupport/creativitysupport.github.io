@@ -36,9 +36,9 @@
                 <img src="src/wh-logo-long-7.png" alt="WrightHere Logo">
             </a>
             <ul class="nav-menu">
-                <li><a href="#gallery">Showcase</a></li>
-                <li><a href="#works">Works</a></li>
-                <li><a href="#exhibition">Exhibition</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#works">Features</a></li>
+                <li><a href="#showcase">History</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -86,20 +86,29 @@
     <!-- Horizontal Gallery Section -->
     <section id="gallery" class="gallery-section">
         <div class="gallery-container">
-            <h2 class="gallery-title fade-in">Showcase</h2>
+            <!-- <h2 class="gallery-title fade-in">Gallery</h2> -->
             <div class="gallery-scroll">
                 <div class="gallery-track">
                     <div class="gallery-item fade-in">
-                        <img src="src/logo-blue.png" alt="Gallery image 1">
+                        <img src="src/teaser-2.png" alt="Gallery image 1">
                     </div>
                     <div class="gallery-item fade-in">
-                        <img src="src/ubicomp-photo.jpg" alt="Gallery image 2">
+                        <img src="src/show-fire.png" alt="Gallery image 2">
                     </div>
                     <div class="gallery-item fade-in">
-                        <img src="src/siggraph-photo-3.jpeg" alt="Gallery image 3">
+                        <img src="src/show-hmd.png" alt="Gallery image 3">
                     </div>
                     <div class="gallery-item fade-in">
-                        <img src="src/logo-blue.png" alt="Gallery image 4">
+                        <img src="src/show-pc.png" alt="Gallery image 4">
+                    </div>
+                    <div class="gallery-item fade-in">
+                        <img src="src/show-exhibition.png" alt="Gallery image 4">
+                    </div>
+                    <!-- <div class="gallery-item fade-in">
+                        <img src="src/show-space.png" alt="Gallery image 4">
+                    </div> -->
+                    <div class="gallery-item fade-in">
+                        <img src="src/show-spaceship.png" alt="Gallery image 4">
                     </div>
                 </div>
             </div>
@@ -109,57 +118,49 @@
     <!-- Works Grid Section -->
     <section id="works" class="works-section">
         <div class="container">
-            <h2 class="section-title fade-in">Featured Works</h2>
+            <h2 class="section-title fade-in">Features</h2>
             
             <div class="work-item fade-in" data-work="1">
                 <div class="work-media" onclick="openModal(1)">
-                    <div class="placeholder-image">
-                        <span>Image / Video</span>
-                    </div>
+                    <img src="src/wh/wh-1-1.png" alt="Narrative Panel">
                 </div>
                 <div class="work-content">
-                    <h3>Interactive Design System</h3>
-                    <p>AI 기반 창의적 협업 도구를 통한 새로운 디자인 프로세스 탐구</p>
-                    <span class="work-tag">#AI #Design #Collaboration</span>
+                    <h3>Narrative Panel</h3>
+                    <p>Write your story paragraph by paragraph. Each written section becomes a foundation for generating corresponding 3D worlds that bring your narrative to life.</p>
+                    <span class="work-tag">#Writing #Creative #Storytelling</span>
                 </div>
             </div>
 
             <div class="work-item fade-in" data-work="2">
                 <div class="work-content">
-                    <h3>Sustainable Innovation</h3>
-                    <p>지속가능한 미래를 위한 창의적 솔루션과 디자인 방법론</p>
-                    <span class="work-tag">#Sustainability #Innovation</span>
+                    <h3>Story World</h3>
+                    <p>Explore generated 3D environments based on your written narrative. Click on world thumbnails to dive into immersive spaces, adjust character positions, and experience your story from within.</p>
+                    <span class="work-tag">#3D #Immersive #Exploration</span>
                 </div>
                 <div class="work-media" onclick="openModal(2)">
-                    <div class="placeholder-image">
-                        <span>Image / Video</span>
-                    </div>
+                    <img src="src/wh/wh-2-1.png" alt="Story World">
                 </div>
             </div>
 
             <div class="work-item fade-in" data-work="3">
                 <div class="work-media" onclick="openModal(3)">
-                    <div class="placeholder-image">
-                        <span>Image / Video</span>
-                    </div>
+                    <img src="src/wh/wh-3-1.png" alt="Create Character">
                 </div>
                 <div class="work-content">
-                    <h3>Generative Art Platform</h3>
-                    <p>생성형 AI를 활용한 예술적 표현과 창작 지원 플랫폼</p>
-                    <span class="work-tag">#GenerativeAI #Art #Platform</span>
+                    <h3>Create Character</h3>
+                    <p>Add new characters or objects to your story world. Click any empty area, describe what you envision, and watch as the system generates and places your creation at the selected location.</p>
+                    <span class="work-tag">#Creation #AI #Interactive</span>
                 </div>
             </div>
 
             <div class="work-item fade-in" data-work="4">
                 <div class="work-content">
-                    <h3>Creative Cognition Study</h3>
-                    <p>창의적 사고와 인지 과정에 대한 실증 연구 및 방법론</p>
-                    <span class="work-tag">#Research #Cognition #Creativity</span>
+                    <h3>Character Dialogue</h3>
+                    <p>Engage in meaningful conversations with characters in your story world. Through dialogue, gain new perspectives and inspiration to develop and advance your narrative.</p>
+                    <span class="work-tag">#Dialogue #Interaction #Inspiration</span>
                 </div>
                 <div class="work-media" onclick="openModal(4)">
-                    <div class="placeholder-image">
-                        <span>Image / Video</span>
-                    </div>
+                    <img src="src/wh/wh-4-1.jpeg" alt="Character Dialogue">
                 </div>
             </div>
 
@@ -191,19 +192,116 @@
         </div>
     </section>
 
-    <!-- Exhibition Section - Full Screen -->
-    <section id="exhibition" class="fullscreen-section exhibition-section">
+    <!-- Showcase Section - Full Screen -->
+    <section id="showcase" class="fullscreen-section showcase-section">
         <div class="content-center fade-in">
-            <h2>Exhibition</h2>
-            <div class="exhibition-info">
-                <div class="info-item">
-                    <h3>Online</h3>
-                    <p>2026.03.01 - Ongoing</p>
+            <h2>Project History</h2>
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2026</div>
+                        <div class="timeline-title">
+                            iF Design Award Winner
+                            <span class="timeline-description">Berlin, Germany</span>
+                            <!-- <a href="https://ifdesign.com/en/winner-ranking/project/wrighthere/764735" class="info-icon" target="_blank" rel="noopener noreferrer">
+                                <span>i</span>
+                                <div class="info-popup">
+                                    <img src="src/if-2026.jpg" alt="iF Design Award">
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <h3>Location</h3>
-                    <p>creativitysupport.github.io</p>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025. 10. 30 ~ 31</div>
+                        <div class="timeline-title">
+                            Open KAIST Exhibition
+                            <span class="timeline-description">Daejeon, South Korea</span>
+                            <!-- <a href="#" class="info-icon" target="_blank" rel="noopener noreferrer">
+                                <span>i</span>
+                                <div class="info-popup">
+                                    <img src="src/placeholder.jpg" alt="Open KAIST Exhibition">
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
                 </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024. 06 ~ 08</div>
+                        <div class="timeline-title">
+                            Children Interview
+                            <span class="timeline-description">32 children, full paper under review</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2025. 04. 26 ~ 30</div>
+                        <div class="timeline-title">
+                            CHI Conference Poster
+                            <span class="timeline-description">Yokohama, Japan</span>
+                            <!-- <a href="https://chi2025.acm.org" class="info-icon" target="_blank" rel="noopener noreferrer">
+                                <span>i</span>
+                                <div class="info-popup">
+                                    <img src="src/placeholder.jpg" alt="Yokohama CHI Conference">
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024. 12. 18 ~ 27</div>
+                        <div class="timeline-title">
+                            Seoul Exhibition
+                            <span class="timeline-description">Insa-dong, Seoul</span>
+                            <!-- <a href="#" class="info-icon" target="_blank" rel="noopener noreferrer">
+                                <span>i</span>
+                                <div class="info-popup">
+                                    <img src="src/placeholder.jpg" alt="Seoul Exhibition">
+                                </div>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024. 03 ~</div>
+                        <div class="timeline-title">
+                            Project Start
+                            <span class="timeline-description">As graduation exhibition project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024. 12 ~ Ongoing</div>
+                        <div class="timeline-title">
+                            Online Exhibition
+                            <a href="https://creativitysupport.github.io" class="info-icon" target="_blank" rel="noopener noreferrer">
+                                <span>i</span>
+                                <div class="info-popup">
+                                    <img src="src/placeholder.jpg" alt="Online Exhibition">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -213,20 +311,20 @@
         <div class="content-center fade-in">
             <h2>Get in Touch</h2>
             <p class="large-text">
-                <a href="mailto:info@creativitysupport.org">info@creativitysupport.org</a>
+                <a href="mailto:jaeryung.ch@gmail.com">jaeryung.ch@gmail.com</a>
             </p>
-            <div class="social-links">
+            <!-- <div class="social-links">
                 <a href="#">Instagram</a>
                 <a href="#">Twitter</a>
                 <a href="#">LinkedIn</a>
-            </div>
+            </div> -->
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Creativity Support. All rights reserved.</p>
+            <p>&copy; 2026 WrightHere. All rights reserved. Project page under construction.</p>
         </div>
     </footer>
 

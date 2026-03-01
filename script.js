@@ -398,31 +398,26 @@ document.addEventListener('DOMContentLoaded', () => {
 const worksData = {
     1: {
         images: [
-            "src/GCG.png",
-            "src/ubicomp-photo.jpg",
-            "src/siggraph-photo-3.jpeg",
-            "src/logo-blue.png"
+            "src/wh/wh-1-1.png",
+            "src/wh/wh-1-2.png"
         ]
     },
     2: {
         images: [
-            "Image 1",
-            "Image 2",
-            "Image 3",
-            "Image 4"
+            "src/wh/wh-2-1.png",
+            "src/wh/wh-2-2.png"
         ]
     },
     3: {
         images: [
-            "Image 1",
-            "Image 2"
+            "src/wh/wh-3-1.png",
+            "src/wh/wh-3-2.png"
         ]
     },
     4: {
         images: [
-            "Image 1",
-            "Image 2",
-            "Image 3"
+            "src/wh/wh-4-1.jpeg",
+            "src/wh/wh-4-2.jpeg"
         ]
     },
     5: {
