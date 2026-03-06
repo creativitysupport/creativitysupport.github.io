@@ -398,26 +398,39 @@ document.addEventListener('DOMContentLoaded', () => {
 const worksData = {
     1: {
         images: [
-            "src/wh/wh-1-1.png",
-            "src/wh/wh-1-2.png"
+            "src/wh/thumb-1.png",
+            "src/wh/thumb-2.png",
+            "src/wh/thumb-3.png",
+            "src/wh/thumb-4.png"
         ]
     },
     2: {
         images: [
-            "src/wh/wh-2-1.png",
-            "src/wh/wh-2-2.png"
+            "src/wh/story-1.png",
+            "src/wh/story-2.png",
+            "src/wh/story-3.png",
+            "src/wh/story-4.png",
+            "src/wh/story-5.png",
+            "src/wh/story-6.png",
+            "src/wh/story-7.png",
+            "src/wh/story-8.png"
         ]
     },
     3: {
         images: [
-            "src/wh/wh-3-1.png",
-            "src/wh/wh-3-2.png"
+            "src/wh/obj-1.png",
+            "src/wh/obj-2.png",
+            "src/wh/obj-3.png",
+            "src/wh/obj-4.png",
+            "src/wh/obj-6.png"
         ]
     },
     4: {
         images: [
-            "src/wh/wh-4-1.jpeg",
-            "src/wh/wh-4-2.jpeg"
+            "src/wh/chat-1.jpeg",
+            "src/wh/chat-2.jpeg",
+            "src/wh/chat-3.jpeg",
+            "src/wh/chat-4.jpeg"
         ]
     },
     5: {
@@ -440,6 +453,7 @@ const worksData = {
 
 let currentSlideIndex = 0;
 let currentWorkImages = [];
+let randomStartIndices = {}; // 각 work의 랜덤 시작 인덱스 저장
 
 // 모달 열기
 function openModal(workId) {
@@ -451,8 +465,20 @@ function openModal(workId) {
         return;
     }
     
-    // 현재 작업의 이미지 배열 저장
-    currentWorkImages = work.images;
+    // 랜덤 시작 인덱스가 없으면 생성 (페이지 로드 시 한 번만)
+    if (randomStartIndices[workId] === undefined) {
+        randomStartIndices[workId] = Math.floor(Math.random() * work.images.length);
+    }
+    
+    const startIndex = randomStartIndices[workId];
+    
+    // 이미지 배열을 랜덤 시작점부터 순환하도록 재배열
+    const reorderedImages = [
+        ...work.images.slice(startIndex),
+        ...work.images.slice(0, startIndex)
+    ];
+    
+    currentWorkImages = reorderedImages;
     currentSlideIndex = 0;
     
     // 캐러셀 업데이트
@@ -687,3 +713,177 @@ function setupHorizontalGalleryScroll() {
     
     // 터치 스크롤은 자동으로 지원됨
 }
+
+/* ============================================
+   Timeline Item Click Handler
+   ============================================ */
+
+function setupTimelineClickHandlers() {
+    const clickableItems = document.querySelectorAll('.timeline-content.timeline-clickable');
+    
+    clickableItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const type = this.dataset.type;
+            
+            if (type === 'link') {
+                const url = this.dataset.url;
+                window.open(url, '_blank', 'noopener,noreferrer');
+            } else if (type === 'image') {
+                const imageSrc = this.dataset.image;
+                openTimelineImageModal(imageSrc);
+            }
+        });
+    });
+}
+
+/* ============================================
+   Timeline Image Modal Functions
+   ============================================ */
+
+function openTimelineImageModal(imageSrc) {
+    const modal = document.getElementById('timelineImageModal');
+    const modalImage = document.getElementById('timelineModalImage');
+    const modalContent = modal.querySelector('.timeline-modal-content');
+    
+    modalImage.src = imageSrc;
+    modal.classList.add('active');
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+    
+    // Close modal when clicking on the image or modal content
+    const closeOnClick = function(e) {
+        closeTimelineImageModal();
+        modalContent.removeEventListener('click', closeOnClick);
+    };
+    
+    // Use setTimeout to prevent immediate closing from the timeline item click
+    setTimeout(() => {
+        modalContent.addEventListener('click', closeOnClick);
+    }, 100);
+}
+
+function closeTimelineImageModal() {
+    const modal = document.getElementById('timelineImageModal');
+    
+    modal.classList.remove('active');
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+}
+
+// ESC key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const timelineModal = document.getElementById('timelineImageModal');
+        if (timelineModal.classList.contains('active')) {
+            closeTimelineImageModal();
+        }
+    }
+});
+
+/* ============================================
+   Initialize Work Thumbnails with Random Images
+   ============================================ */
+
+function initializeWorkThumbnails() {
+    // Work 1부터 4까지 각각의 썸네일 초기화
+    for (let workId = 1; workId <= 4; workId++) {
+        const work = worksData[workId];
+        if (!work) continue;
+        
+        // 랜덤 인덱스 생성 및 저장
+        if (randomStartIndices[workId] === undefined) {
+            randomStartIndices[workId] = Math.floor(Math.random() * work.images.length);
+        }
+        
+        // 썸네일 이미지 업데이트
+        const thumbElement = document.getElementById(`work-thumb-${workId}`);
+        if (thumbElement) {
+            thumbElement.src = work.images[randomStartIndices[workId]];
+        }
+    }
+}
+
+/* ============================================
+   Interactive Shadow Effect on Features
+   ============================================ */
+
+function setupInteractiveShadow() {
+    const workMediaElements = document.querySelectorAll('.work-media');
+    
+    workMediaElements.forEach(element => {
+        element.addEventListener('mousemove', function(e) {
+            const rect = element.getBoundingClientRect();
+            const x = e.clientX - rect.left; // 박스 내 마우스 x 위치
+            const y = e.clientY - rect.top;  // 박스 내 마우스 y 위치
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // 마우스 위치에 따라 그림자 오프셋 계산 (같은 방향)
+            const shadowX = (x - centerX) / 10; // 마우스와 같은 방향
+            const shadowY = (y - centerY) / 10;
+            
+            // 그림자 블러와 스프레드
+            const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+            const maxDistance = Math.sqrt(Math.pow(centerX, 2) + Math.pow(centerY, 2));
+            const intensity = (distance / maxDistance) * 0.12 + 0.1; // 0.1 ~ 0.35 (적당하게)
+            
+            element.style.boxShadow = `
+                ${shadowX}px ${shadowY}px ${25 + distance / 12}px rgba(229, 130, 69, ${intensity}),
+                0 4px 20px rgba(0, 0, 0, 0.2)
+            `;
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            // 마우스가 벗어나면 원래 그림자로 복귀
+            element.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
+        });
+    });
+}
+
+/* ============================================
+   Mobile Menu Toggle
+   ============================================ */
+
+function setupMobileMenu() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    if (!navToggle || !navMenu) return;
+    
+    // Toggle menu on button click
+    navToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('open');
+    });
+    
+    // Close menu when clicking a link
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navMenu.classList.remove('open');
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-container')) {
+            navMenu.classList.remove('open');
+        }
+    });
+    
+    // Close menu on scroll
+    window.addEventListener('scroll', function() {
+        navMenu.classList.remove('open');
+    });
+}
+
+// Initialize timeline click handlers and work thumbnails when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    setupTimelineClickHandlers();
+    initializeWorkThumbnails();
+    setupInteractiveShadow();
+    setupMobileMenu();
+});
