@@ -886,4 +886,52 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeWorkThumbnails();
     setupInteractiveShadow();
     setupMobileMenu();
+    setupContactForm();
 });
+
+/* ============================================
+   Contact Form Handler
+   ============================================ */
+
+function setupContactForm() {
+    const form = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = form.querySelector('.submit-btn');
+        const formData = new FormData(form);
+        
+        // Disable button during submission
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        formStatus.style.display = 'none';
+        
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                formStatus.className = 'form-status success';
+                formStatus.textContent = 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
+                form.reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            formStatus.className = 'form-status error';
+            formStatus.textContent = 'Oops! Something went wrong. Please try again or email me directly.';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+        }
+    });
+}
